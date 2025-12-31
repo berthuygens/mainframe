@@ -163,7 +163,7 @@
             51%, 100% { opacity: 0; }
         }
 
-        /* Fun GitHub Post Box */
+        /* Fun Reddit Post Box */
         .fun-post-section {
             margin-bottom: 2.5rem;
         }
@@ -215,7 +215,7 @@
         }
 
         .fun-post-refresh:hover {
-            color: var(--accent-blue);
+            color: var(--accent-orange);
             background: var(--bg-primary);
         }
 
@@ -230,6 +230,7 @@
 
         .fun-post-body {
             padding: 1.25rem;
+            min-height: 100px;
         }
 
         .fun-post-content {
@@ -240,11 +241,23 @@
 
         .fun-post-image {
             flex-shrink: 0;
-            width: 80px;
-            height: 80px;
+            width: 120px;
+            height: 120px;
             border-radius: 8px;
             object-fit: cover;
             background: var(--bg-tertiary);
+        }
+
+        .fun-post-no-image {
+            flex-shrink: 0;
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
         }
 
         .fun-post-text {
@@ -258,13 +271,36 @@
             color: var(--text-primary);
             margin-bottom: 0.5rem;
             line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
-        .fun-post-text p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
+        .fun-post-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .fun-post-meta .subreddit {
+            color: var(--accent-orange);
+            font-weight: 500;
+        }
+
+        .fun-post-stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
             margin-bottom: 0.75rem;
+        }
+
+        .fun-post-stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
         }
 
         .fun-post-link {
@@ -272,25 +308,14 @@
             align-items: center;
             gap: 0.35rem;
             font-size: 0.75rem;
-            color: var(--accent-blue);
+            color: var(--accent-orange);
             text-decoration: none;
             transition: color 0.15s;
         }
 
         .fun-post-link:hover {
-            color: var(--accent-purple);
+            color: var(--accent-red);
             text-decoration: underline;
-        }
-
-        .fun-post-tag {
-            display: inline-block;
-            font-size: 0.65rem;
-            padding: 0.15rem 0.5rem;
-            background: var(--accent-purple);
-            color: #fff;
-            border-radius: 10px;
-            margin-left: 0.5rem;
-            opacity: 0.8;
         }
 
         /* Dashboard Grid */
@@ -955,15 +980,15 @@
             </div>
         </header>
 
-        <!-- Fun GitHub Post -->
+        <!-- Fun Reddit Post -->
         <section class="fun-post-section">
             <div class="fun-post-container">
                 <div class="fun-post-header">
                     <div class="fun-post-title">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
                         </svg>
-                        Fun GitHub Discovery
+                        Random Fun Post
                     </div>
                     <button class="fun-post-refresh" id="fun-post-refresh" title="Show another">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1211,173 +1236,113 @@
         updateClock();
         setInterval(updateClock, 1000);
 
-        // Fun GitHub Posts - Curated SFW content
-        const funGitHubPosts = [
-            {
-                title: "The Mother of All Demos (1968)",
-                description: "Douglas Engelbart's legendary demo that introduced the mouse, hypertext, video conferencing, and collaborative editing - 50 years before they became mainstream.",
-                image: "https://octodex.github.com/images/founding-father.jpg",
-                url: "https://github.com/readme/featured/the-mother-of-all-demos",
-                tag: "History"
-            },
-            {
-                title: "Awesome Lists Collection",
-                description: "A curated list of awesome lists - the ultimate meta-collection of the best resources on any topic you can imagine.",
-                image: "https://octodex.github.com/images/collabocats.jpg",
-                url: "https://github.com/sindresorhus/awesome",
-                tag: "Resources"
-            },
-            {
-                title: "Build Your Own X",
-                description: "Master programming by recreating your favorite technologies from scratch. Build your own Git, Docker, or even a programming language!",
-                image: "https://octodex.github.com/images/constructocat2.jpg",
-                url: "https://github.com/codecrafters-io/build-your-own-x",
-                tag: "Learning"
-            },
-            {
-                title: "Free Programming Books",
-                description: "Freely available programming books in multiple languages. From algorithms to web development, all completely free.",
-                image: "https://octodex.github.com/images/bouncercat.png",
-                url: "https://github.com/EbookFoundation/free-programming-books",
-                tag: "Books"
-            },
-            {
-                title: "Developer Roadmaps",
-                description: "Interactive roadmaps, guides and educational content to help developers pick their learning path and track progress.",
-                image: "https://octodex.github.com/images/jetpacktocat.png",
-                url: "https://github.com/kamranahmedse/developer-roadmap",
-                tag: "Career"
-            },
-            {
-                title: "The Art of Command Line",
-                description: "Master the command line in one page. Fluency on the command line is a skill often neglected but improves your productivity immensely.",
-                image: "https://octodex.github.com/images/nyantocat.gif",
-                url: "https://github.com/jlevy/the-art-of-command-line",
-                tag: "Skills"
-            },
-            {
-                title: "Public APIs Collection",
-                description: "A collective list of free APIs for use in software and web development. From weather to cats, there's an API for everything!",
-                image: "https://octodex.github.com/images/daftpunktocat-thomas.gif",
-                url: "https://github.com/public-apis/public-apis",
-                tag: "APIs"
-            },
-            {
-                title: "Coding Interview University",
-                description: "A complete computer science study plan to become a software engineer. Originally created as a personal study list.",
-                image: "https://octodex.github.com/images/class-hierarchytocat.png",
-                url: "https://github.com/jwasham/coding-interview-university",
-                tag: "Interview"
-            },
-            {
-                title: "System Design Primer",
-                description: "Learn how to design large-scale systems. Prep for the system design interview. Includes real-world examples.",
-                image: "https://octodex.github.com/images/manufacturetocat.png",
-                url: "https://github.com/donnemartin/system-design-primer",
-                tag: "Architecture"
-            },
-            {
-                title: "What Happens When...",
-                description: "An attempt to answer the age old interview question: What happens when you type google.com into your browser and press enter?",
-                image: "https://octodex.github.com/images/inspectocat.jpg",
-                url: "https://github.com/alex/what-happens-when",
-                tag: "Deep Dive"
-            },
-            {
-                title: "Tech Interview Handbook",
-                description: "Curated coding interview preparation materials for busy software engineers. Quality over quantity.",
-                image: "https://octodex.github.com/images/scottocat.jpg",
-                url: "https://github.com/yangshun/tech-interview-handbook",
-                tag: "Interview"
-            },
-            {
-                title: "JavaScript Algorithms",
-                description: "Algorithms and data structures implemented in JavaScript with explanations and links to further readings.",
-                image: "https://octodex.github.com/images/dojocat.jpg",
-                url: "https://github.com/trekhleb/javascript-algorithms",
-                tag: "Algorithms"
-            },
-            {
-                title: "Node.js Best Practices",
-                description: "The Node.js best practices list - a summary and curation of the top-ranked content on Node.js best practices.",
-                image: "https://octodex.github.com/images/steroidtocat.png",
-                url: "https://github.com/goldbergyoni/nodebestpractices",
-                tag: "Node.js"
-            },
-            {
-                title: "Clean Code JavaScript",
-                description: "Clean Code concepts adapted for JavaScript. A guide to producing readable, reusable, and refactorable software.",
-                image: "https://octodex.github.com/images/baracktocat.jpg",
-                url: "https://github.com/ryanmcdermott/clean-code-javascript",
-                tag: "Clean Code"
-            },
-            {
-                title: "30 Seconds of Code",
-                description: "Short JavaScript code snippets for all your development needs. Copy, paste, and go!",
-                image: "https://octodex.github.com/images/twenty-percent-cooler-octocat.png",
-                url: "https://github.com/Chalarangelo/30-seconds-of-code",
-                tag: "Snippets"
-            },
-            {
-                title: "You Don't Know JS",
-                description: "A book series on JavaScript. This is a series of books diving deep into the core mechanisms of the JavaScript language.",
-                image: "https://octodex.github.com/images/adventure-cat.png",
-                url: "https://github.com/getify/You-Dont-Know-JS",
-                tag: "JavaScript"
-            },
-            {
-                title: "Real World Projects",
-                description: "The mother of all demo apps - same app built with different frontends and backends. Compare React, Vue, Angular and more!",
-                image: "https://octodex.github.com/images/dinotocat.png",
-                url: "https://github.com/gothinkster/realworld",
-                tag: "Projects"
-            },
-            {
-                title: "Papers We Love",
-                description: "Papers from the computer science community to read and discuss. Understanding the foundational ideas behind our tools.",
-                image: "https://octodex.github.com/images/labtocat.png",
-                url: "https://github.com/papers-we-love/papers-we-love",
-                tag: "Research"
-            },
-            {
-                title: "Project-Based Learning",
-                description: "Curated list of project-based tutorials. Learn by doing - build real projects while learning to code.",
-                image: "https://octodex.github.com/images/filmtocat.png",
-                url: "https://github.com/practical-tutorials/project-based-learning",
-                tag: "Tutorials"
-            },
-            {
-                title: "Every Programmer Should Know",
-                description: "A collection of technical things every software developer should know. Algorithms, security, architecture and more.",
-                image: "https://octodex.github.com/images/femalecodertocat.png",
-                url: "https://github.com/mtdvio/every-programmer-should-know",
-                tag: "Knowledge"
-            }
+        // Fun Reddit Posts - SFW subreddits only
+        const sfwSubreddits = [
+            { name: 'ProgrammerHumor', icon: '💻' },
+            { name: 'aww', icon: '🐱' },
+            { name: 'wholesomememes', icon: '💚' },
+            { name: 'MadeMeSmile', icon: '😊' },
+            { name: 'oddlysatisfying', icon: '✨' },
+            { name: 'NatureIsFuckingLit', icon: '🔥' },
+            { name: 'interestingasfuck', icon: '🤯' },
+            { name: 'EarthPorn', icon: '🌍' },
+            { name: 'foodporn', icon: '🍕' },
+            { name: 'CozyPlaces', icon: '🏠' },
+            { name: 'rarepuppers', icon: '🐕' },
+            { name: 'Eyebleach', icon: '🥰' },
+            { name: 'AnimalsBeingDerps', icon: '🤪' },
+            { name: 'cats', icon: '😺' },
+            { name: 'mildlyinteresting', icon: '🧐' }
         ];
 
-        let lastFunPostIndex = -1;
+        let cachedRedditPosts = [];
+        let currentPostIndex = 0;
 
-        function getRandomFunPost() {
-            let index;
-            do {
-                index = Math.floor(Math.random() * funGitHubPosts.length);
-            } while (index === lastFunPostIndex && funGitHubPosts.length > 1);
-            lastFunPostIndex = index;
-            return funGitHubPosts[index];
+        async function fetchRedditPosts() {
+            const randomSub = sfwSubreddits[Math.floor(Math.random() * sfwSubreddits.length)];
+
+            try {
+                const response = await fetch(`https://www.reddit.com/r/${randomSub.name}/hot.json?limit=50`);
+                const data = await response.json();
+
+                // Filter for SFW posts with images
+                const posts = data.data.children
+                    .map(child => child.data)
+                    .filter(post => {
+                        // Skip NSFW posts
+                        if (post.over_18) return false;
+                        // Skip stickied/pinned posts
+                        if (post.stickied) return false;
+                        // Skip videos and self posts without preview
+                        if (post.is_video) return false;
+                        return true;
+                    })
+                    .map(post => ({
+                        title: post.title,
+                        subreddit: post.subreddit_name_prefixed,
+                        subredditIcon: randomSub.icon,
+                        url: `https://reddit.com${post.permalink}`,
+                        image: getPostImage(post),
+                        score: post.score,
+                        comments: post.num_comments,
+                        author: post.author
+                    }));
+
+                return posts;
+            } catch (err) {
+                console.error('Reddit fetch error:', err);
+                return [];
+            }
         }
 
-        function renderFunPost() {
+        function getPostImage(post) {
+            // Try to get image from various Reddit image sources
+            if (post.url && (post.url.includes('i.redd.it') || post.url.includes('i.imgur.com'))) {
+                return post.url;
+            }
+            if (post.preview && post.preview.images && post.preview.images[0]) {
+                // Get a reasonably sized preview
+                const images = post.preview.images[0];
+                if (images.resolutions && images.resolutions.length > 0) {
+                    // Get medium resolution
+                    const midRes = images.resolutions[Math.min(2, images.resolutions.length - 1)];
+                    return midRes.url.replace(/&amp;/g, '&');
+                }
+                return images.source.url.replace(/&amp;/g, '&');
+            }
+            if (post.thumbnail && post.thumbnail.startsWith('http')) {
+                return post.thumbnail;
+            }
+            return null;
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+            return num.toString();
+        }
+
+        function renderRedditPost(post) {
             const container = document.getElementById('fun-post-body');
-            const post = getRandomFunPost();
+
+            const imageHtml = post.image
+                ? `<img src="${post.image}" alt="Post image" class="fun-post-image" onerror="this.parentElement.innerHTML='<div class=\\'fun-post-no-image\\'>${post.subredditIcon}</div>'">`
+                : `<div class="fun-post-no-image">${post.subredditIcon}</div>`;
 
             container.innerHTML = `
                 <div class="fun-post-content">
-                    <img src="${post.image}" alt="Octocat" class="fun-post-image" onerror="this.src='https://octodex.github.com/images/original.png'">
+                    ${imageHtml}
                     <div class="fun-post-text">
-                        <h3>${escapeHtml(post.title)}<span class="fun-post-tag">${post.tag}</span></h3>
-                        <p>${escapeHtml(post.description)}</p>
+                        <h3>${escapeHtml(post.title)}</h3>
+                        <div class="fun-post-meta">
+                            <span class="subreddit">${post.subreddit}</span> · u/${escapeHtml(post.author)}
+                        </div>
+                        <div class="fun-post-stats">
+                            <span>⬆ ${formatNumber(post.score)}</span>
+                            <span>💬 ${formatNumber(post.comments)}</span>
+                        </div>
                         <a href="${post.url}" class="fun-post-link" target="_blank" rel="noopener">
-                            Explore on GitHub
+                            View on Reddit
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                 <polyline points="15 3 21 3 21 9"></polyline>
@@ -1389,16 +1354,59 @@
             `;
         }
 
-        // Initialize fun post
-        renderFunPost();
+        async function showRandomRedditPost() {
+            const container = document.getElementById('fun-post-body');
+
+            // If we have cached posts and haven't shown them all, show next one
+            if (cachedRedditPosts.length > 0 && currentPostIndex < cachedRedditPosts.length) {
+                renderRedditPost(cachedRedditPosts[currentPostIndex]);
+                currentPostIndex++;
+                return;
+            }
+
+            // Fetch new posts
+            container.innerHTML = `
+                <div class="loading">
+                    <div class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            `;
+
+            const posts = await fetchRedditPosts();
+
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📡</div>
+                        <div class="empty-text">Could not load Reddit posts</div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Shuffle posts for variety
+            cachedRedditPosts = posts.sort(() => Math.random() - 0.5);
+            currentPostIndex = 0;
+
+            renderRedditPost(cachedRedditPosts[currentPostIndex]);
+            currentPostIndex++;
+        }
+
+        // Initialize Reddit post
+        showRandomRedditPost();
 
         // Refresh button
         document.getElementById('fun-post-refresh').addEventListener('click', function() {
             this.classList.add('spinning');
-            setTimeout(() => {
-                renderFunPost();
+            // If we've shown all cached posts, fetch new ones from a different subreddit
+            if (currentPostIndex >= cachedRedditPosts.length) {
+                cachedRedditPosts = [];
+                currentPostIndex = 0;
+            }
+            showRandomRedditPost().then(() => {
                 this.classList.remove('spinning');
-            }, 300);
+            });
         });
 
         // Quick Links with drag & drop
