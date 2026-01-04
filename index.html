@@ -148,6 +148,24 @@
             color: var(--accent-blue);
         }
 
+        .ccb-news-ticker {
+            color: var(--text-secondary);
+            text-decoration: none;
+            max-width: 600px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: opacity 0.4s ease-in-out, color 0.2s;
+        }
+
+        .ccb-news-ticker:hover {
+            color: var(--accent-green);
+        }
+
+        .ccb-news-ticker.fade-out {
+            opacity: 0;
+        }
+
         .cursor {
             display: inline-block;
             width: 8px;
@@ -1052,7 +1070,7 @@
             <div class="terminal-prompt">
                 <span class="prompt-symbol">❯</span>
                 <span class="prompt-path">~/daemon</span>
-                <span>ready</span>
+                <a href="#" id="ccb-news-ticker" class="ccb-news-ticker" target="_blank" rel="noopener">loading...</a>
                 <span class="cursor"></span>
             </div>
         </header>
@@ -2365,6 +2383,69 @@
             }
         }
 
+        // CCB News Ticker
+        let ccbNewsItems = [];
+        let ccbCurrentIndex = 0;
+        let ccbTickerInterval = null;
+
+        async function fetchCCBNews() {
+            const ticker = document.getElementById('ccb-news-ticker');
+            try {
+                // Use allorigins.win as CORS proxy
+                const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://ccb.belgium.be/advisories.xml');
+                const response = await fetch(proxyUrl);
+                const xmlText = await response.text();
+
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                const items = xmlDoc.querySelectorAll('item');
+
+                ccbNewsItems = Array.from(items).slice(0, 10).map(item => ({
+                    title: item.querySelector('title')?.textContent || 'No title',
+                    link: item.querySelector('link')?.textContent || '#'
+                }));
+
+                if (ccbNewsItems.length > 0) {
+                    showCCBNewsItem();
+                    // Rotate every 5 seconds
+                    if (ccbTickerInterval) clearInterval(ccbTickerInterval);
+                    ccbTickerInterval = setInterval(rotateCCBNews, 5000);
+                } else {
+                    ticker.textContent = 'no advisories';
+                    ticker.href = 'https://ccb.belgium.be/advisories';
+                }
+            } catch (error) {
+                console.error('Failed to fetch CCB news:', error);
+                ticker.textContent = 'ccb unavailable';
+                ticker.href = 'https://ccb.belgium.be/advisories';
+            }
+        }
+
+        function showCCBNewsItem() {
+            const ticker = document.getElementById('ccb-news-ticker');
+            if (ccbNewsItems.length === 0) return;
+
+            const item = ccbNewsItems[ccbCurrentIndex];
+            ticker.textContent = item.title;
+            ticker.href = item.link;
+        }
+
+        function rotateCCBNews() {
+            const ticker = document.getElementById('ccb-news-ticker');
+
+            // Fade out
+            ticker.classList.add('fade-out');
+
+            setTimeout(() => {
+                // Move to next item
+                ccbCurrentIndex = (ccbCurrentIndex + 1) % ccbNewsItems.length;
+                showCCBNewsItem();
+
+                // Fade in
+                ticker.classList.remove('fade-out');
+            }, 400);
+        }
+
         function init() {
             document.getElementById('github-status').className = 'status-dot';
 
@@ -2372,6 +2453,7 @@
             fetchGitHubData();
             fetchNextMeeting();
             updateLastUpdated();
+            fetchCCBNews();
         }
 
         init();
