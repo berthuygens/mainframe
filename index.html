@@ -2255,9 +2255,19 @@
 
         // Listen for OAuth success message from popup
         window.addEventListener('message', (event) => {
+            const config = getConfig();
+
+            // Validate origin matches our worker
+            if (!config.workerUrl || !event.origin) return;
+
+            const workerOrigin = new URL(config.workerUrl).origin;
+            if (event.origin !== workerOrigin) {
+                console.warn('Rejected message from untrusted origin:', event.origin);
+                return;
+            }
+
             if (event.data && event.data.type === 'oauth-success') {
                 console.log('OAuth success received from Worker!');
-                const config = getConfig();
                 config.googleAccessToken = event.data.accessToken;
                 config.googleTokenExpiry = Date.now() + (event.data.expiresIn * 1000);
                 saveConfig(config);
