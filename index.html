@@ -242,7 +242,7 @@
         /* ========== Hero Section with Animated Glow ========== */
         .hero {
             text-align: center;
-            padding: var(--space-6) 0 var(--space-4);
+            padding: var(--space-4) 0 var(--space-3);
             position: relative;
         }
 
@@ -251,23 +251,23 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 200px;
-            height: 100px;
-            background: var(--accent);
-            filter: blur(60px);
-            opacity: 0.25;
-            animation: glow-pulse 4s ease-in-out infinite;
+            width: 180px;
+            height: 80px;
+            background: #888888;
+            filter: blur(50px);
+            opacity: 0.12;
+            animation: glow-pulse 5s ease-in-out infinite;
             pointer-events: none;
         }
 
         @keyframes glow-pulse {
             0%, 100% {
-                opacity: 0.2;
+                opacity: 0.08;
                 transform: translate(-50%, -50%) scale(1);
             }
             50% {
-                opacity: 0.4;
-                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 0.15;
+                transform: translate(-50%, -50%) scale(1.05);
             }
         }
 
@@ -288,16 +288,22 @@
             color: #5a5a5a;
         }
 
-        .hero-time {
-            font-size: 20px;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: var(--space-1);
-        }
-
-        .hero-date {
+        .hero-datetime {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
             font-size: 14px;
             color: var(--text-muted);
+        }
+
+        .hero-time {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .hero-separator {
+            opacity: 0.4;
         }
 
         /* ========== Search ========== */
@@ -1043,15 +1049,11 @@
             }
 
             .hero {
-                padding: var(--space-4) 0 var(--space-3);
+                padding: var(--space-3) 0 var(--space-2);
             }
 
-            .hero-brand {
-                font-size: 32px;
-            }
-
-            .hero-time {
-                font-size: 16px;
+            .hero-datetime {
+                font-size: 12px;
             }
 
             .fun-widget {
@@ -1123,9 +1125,11 @@
             <header class="hero">
                 <div class="hero-glow"></div>
                 <div class="hero-content">
-                    <h1 class="hero-brand">B3.wtf</h1>
-                    <div class="hero-time" id="hero-time">--:--</div>
-                    <div class="hero-date" id="hero-date">Loading...</div>
+                    <div class="hero-datetime">
+                        <span class="hero-time" id="hero-time">--:--</span>
+                        <span class="hero-separator">·</span>
+                        <span id="hero-date">Loading...</span>
+                    </div>
                 </div>
             </header>
 
