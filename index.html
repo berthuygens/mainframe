@@ -96,15 +96,12 @@
         .ascii-header {
             text-align: center;
             margin-bottom: 24px;
-            padding: 24px 24px;
+            padding: 12px 24px;
             background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
             border: 1px solid var(--border-color);
             border-radius: var(--border-radius-lg);
             position: relative;
             overflow: hidden;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .ascii-header::before {
@@ -119,13 +116,13 @@
 
         .ascii-art {
             font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-            font-size: 0.5rem;
-            line-height: 1.15;
+            font-size: 0.85rem;
+            line-height: 1.2;
             color: var(--text-primary);
             white-space: pre;
             display: inline-block;
-            font-weight: 600;
-            opacity: 0.8;
+            font-weight: 500;
+            opacity: 0.9;
         }
 
         .terminal-prompt {
@@ -1173,12 +1170,11 @@
         <!-- ASCII Art Header -->
         <header class="ascii-header">
             <pre class="ascii-art">
- ██████╗ ██████╗   ██╗    ██╗████████╗███████╗
- ██╔══██╗╚════██╗  ██║    ██║╚══██╔══╝██╔════╝
- ██████╔╝ █████╔╝  ██║ █╗ ██║   ██║   █████╗
- ██╔══██╗ ╚═══██╗  ██║███╗██║   ██║   ██╔══╝
- ██████╔╝██████╔╝██╗╚███╔███╔╝   ██║   ██║
- ╚═════╝ ╚═════╝ ╚═╝ ╚══╝╚══╝    ╚═╝   ╚═╝
+ .---------.
+ | b3.wtf  |    (\__/)
+ '---------'    (o.o )
+      \         (> < )
+       '-------'
             </pre>
             <div class="clock">
                 <div class="clock-time" id="clock-time">--:--</div>
