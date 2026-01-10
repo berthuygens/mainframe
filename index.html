@@ -1397,12 +1397,30 @@
             const imageContainer = document.getElementById('fun-post-image');
 
             container.innerHTML = `
-                <div class="fun-widget-meta">${post.subreddit} · ⬆ ${formatNumber(post.score)}</div>
-                <div class="fun-widget-title"><a href="${post.url}" target="_blank" rel="noopener">${escapeHtml(post.title)}</a></div>
+                <div class="fun-widget-meta">${escapeHtml(post.subreddit)} · ⬆ ${formatNumber(post.score)}</div>
+                <div class="fun-widget-title"><a href="${escapeHtml(post.url)}" target="_blank" rel="noopener">${escapeHtml(post.title)}</a></div>
             `;
 
             if (post.image) {
-                imageContainer.innerHTML = `<img src="${post.image}" alt="" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>🎲</span>'">`;
+                // SECURITY: Use DOM APIs instead of innerHTML to prevent XSS via malicious image URLs
+                imageContainer.innerHTML = '';
+                const img = document.createElement('img');
+                img.alt = '';
+                img.addEventListener('error', () => {
+                    imageContainer.innerHTML = '<span class="placeholder">🎲</span>';
+                });
+                // Validate URL scheme before setting src
+                try {
+                    const url = new URL(post.image);
+                    if (url.protocol === 'https:' || url.protocol === 'http:') {
+                        img.src = post.image;
+                        imageContainer.appendChild(img);
+                    } else {
+                        imageContainer.innerHTML = '<span class="placeholder">🎲</span>';
+                    }
+                } catch {
+                    imageContainer.innerHTML = '<span class="placeholder">🎲</span>';
+                }
             } else {
                 imageContainer.innerHTML = '<span class="placeholder">🎲</span>';
             }

@@ -72,9 +72,12 @@ export default {
 };
 
 // Step 1: Redirect to Google OAuth
-function handleAuth(env, url) {
+async function handleAuth(env, url) {
   const state = crypto.randomUUID();
   const redirectUri = `${url.origin}/callback`;
+
+  // SECURITY: Store state in KV with 5-minute TTL for CSRF protection
+  await env.OAUTH_TOKENS.put(`oauth_state:${state}`, 'valid', { expirationTtl: 300 });
 
   const params = new URLSearchParams({
     client_id: env.GOOGLE_CLIENT_ID,
@@ -92,17 +95,41 @@ function handleAuth(env, url) {
 // Step 2: Handle OAuth callback, exchange code for tokens
 async function handleCallback(request, env, url) {
   const code = url.searchParams.get('code');
+  const state = url.searchParams.get('state');
   const error = url.searchParams.get('error');
 
   if (error) {
     return htmlResponse(`
       <html><body>
         <h1>Authorization Failed</h1>
-        <p>Error: ${error}</p>
+        <p>Error: ${escapeHtml(error)}</p>
         <script>setTimeout(() => window.close(), 3000);</script>
       </body></html>
     `);
   }
+
+  // SECURITY: Validate state parameter to prevent CSRF attacks
+  if (!state) {
+    return htmlResponse(`
+      <html><body>
+        <h1>Authorization Failed</h1>
+        <p>Missing state parameter</p>
+      </body></html>
+    `);
+  }
+
+  const storedState = await env.OAUTH_TOKENS.get(`oauth_state:${state}`);
+  if (!storedState) {
+    return htmlResponse(`
+      <html><body>
+        <h1>Authorization Failed</h1>
+        <p>Invalid or expired state parameter. Please try again.</p>
+      </body></html>
+    `);
+  }
+
+  // Delete the state to prevent replay attacks
+  await env.OAUTH_TOKENS.delete(`oauth_state:${state}`);
 
   if (!code) {
     return htmlResponse(`
@@ -331,4 +358,15 @@ function htmlResponse(html, status = 200) {
     status,
     headers: { 'Content-Type': 'text/html' },
   });
+}
+
+// Helper: Escape HTML to prevent XSS
+function escapeHtml(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
