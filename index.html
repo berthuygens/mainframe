@@ -1,0 +1,2348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>b3.wtf</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=2">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Dark Mode First - Default */
+            --bg-base: #09090b;
+            --bg-surface: #18181b;
+            --bg-elevated: #27272a;
+            --bg-hover: #3f3f46;
+
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --border-subtle: rgba(255, 255, 255, 0.04);
+
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --text-faint: #52525b;
+
+            /* Accent - Orange/Amber */
+            --accent: #f59e0b;
+            --accent-hover: #fbbf24;
+            --accent-muted: rgba(245, 158, 11, 0.15);
+            --accent-glow: rgba(245, 158, 11, 0.4);
+
+            /* Semantic */
+            --success: #22c55e;
+            --success-muted: rgba(34, 197, 94, 0.15);
+            --warning: #eab308;
+            --error: #ef4444;
+            --info: #3b82f6;
+            --purple: #a855f7;
+
+            /* Text accent - subtle blue for metadata */
+            --text-accent: #60a5fa;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 60px var(--accent-glow);
+
+            /* Radius - Sharp system */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-full: 9999px;
+
+            /* Spacing */
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+            --space-12: 48px;
+
+            /* Typography */
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+            /* Animation */
+            --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+            --duration-fast: 150ms;
+            --duration-normal: 200ms;
+        }
+
+        /* Light Mode */
+        [data-theme="light"] {
+            --bg-base: #fafafa;
+            --bg-surface: #ffffff;
+            --bg-elevated: #f4f4f5;
+            --bg-hover: #e4e4e7;
+
+            --border: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(0, 0, 0, 0.15);
+            --border-subtle: rgba(0, 0, 0, 0.04);
+
+            --text-primary: #18181b;
+            --text-secondary: #52525b;
+            --text-muted: #71717a;
+            --text-faint: #a1a1aa;
+
+            --accent-muted: rgba(245, 158, 11, 0.1);
+            --accent-glow: rgba(245, 158, 11, 0.25);
+
+            --success-muted: rgba(34, 197, 94, 0.1);
+
+            --text-accent: #2563eb;
+
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 13px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-mono);
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.5;
+            font-size: 13px;
+        }
+
+        /* ========== Navigation Bar ========== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-3) var(--space-6);
+            z-index: 100;
+        }
+
+        [data-theme="light"] .nav {
+            background: rgba(250, 250, 250, 0.85);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-ascii {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            line-height: 1.4;
+            color: #6b6b6b;
+            margin: 0;
+        }
+
+        [data-theme="light"] .nav-ascii {
+            color: #5a5a5a;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .nav-btn {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: #6b6b6b;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-out);
+        }
+
+        .nav-btn:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+
+        .nav-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .profile-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 2px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--bg-elevated);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-out);
+        }
+
+        .profile-btn:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .profile-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-btn .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent-muted), var(--bg-elevated));
+            color: var(--text-muted);
+        }
+
+        .theme-btn .sun-icon { display: none; }
+        .theme-btn .moon-icon { display: block; }
+        [data-theme="light"] .theme-btn .sun-icon { display: block; }
+        [data-theme="light"] .theme-btn .moon-icon { display: none; }
+
+        /* ========== Main Container ========== */
+        .main {
+            padding-top: 72px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-8) var(--space-6);
+        }
+
+                /* ========== Search ========== */
+        .search-section {
+            max-width: 600px;
+            margin: 0 auto var(--space-4);
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-prefix {
+            position: absolute;
+            left: var(--space-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b6b6b;
+            pointer-events: none;
+            font-size: 13px;
+        }
+
+        .search-icon {
+            display: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--space-2) var(--space-3) var(--space-2) 28px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: var(--text-primary);
+            transition: all var(--duration-fast) var(--ease-out);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #6b6b6b;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-results {
+            position: absolute;
+            top: calc(100% + 2px);
+            left: 0;
+            right: 0;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            display: none;
+            z-index: 50;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-results.has-results {
+            display: block;
+        }
+
+        /* ========== Dashboard Grid ========== */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========== Cards ========== */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-2) var(--space-3);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-base);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: 12px;
+            color: #6b6b6b;
+        }
+
+        .card-title::before {
+            content: '>';
+            color: #6b6b6b;
+        }
+
+        .card-title svg {
+            display: none;
+        }
+
+        .card-badge {
+            font-size: 13px;
+            padding: 2px 6px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: #6b6b6b;
+        }
+
+        .card-toggle {
+            display: flex;
+            gap: 4px;
+        }
+
+        .card-toggle-btn {
+            font-size: 13px;
+            padding: 2px 6px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-out);
+            white-space: nowrap;
+            font-family: var(--font-mono);
+        }
+
+        .card-toggle-btn:hover {
+            color: var(--text-secondary);
+            border-color: var(--border-hover);
+        }
+
+        .card-toggle-btn.active {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border-color: #6b6b6b;
+        }
+
+        .card-body {
+            padding: var(--space-2);
+            height: 280px;
+            overflow-y: auto;
+        }
+
+        .card-body::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .card-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .card-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 2px;
+        }
+
+        .card-body::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        [data-theme="light"] .card-body::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="light"] .card-body::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        /* ========== List Items (GitHub/Calendar) ========== */
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            text-decoration: none;
+            color: inherit;
+            border-bottom: 1px solid var(--border-subtle);
+            transition: background var(--duration-fast) var(--ease-out);
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item:hover,
+        .list-item.selected {
+            background: var(--bg-elevated);
+        }
+
+        .list-item.selected .list-item-title {
+            text-decoration: underline;
+        }
+
+        .list-item-icon {
+            display: none;
+        }
+
+        .list-item-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .list-item-content::before {
+            content: '- ';
+            color: #6b6b6b;
+        }
+
+        .list-item-title {
+            font-size: 12px;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            display: inline;
+        }
+
+        .list-item:hover .list-item-title {
+            color: var(--text-primary);
+            text-decoration: underline;
+        }
+
+        .list-item-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: 13px;
+            color: #6b6b6b;
+            margin-top: 2px;
+            padding-left: 12px;
+        }
+
+        .list-item-meta .repo { color: #6b6b6b; }
+        .list-item-meta .assignee { color: var(--text-accent); }
+        .list-item-meta .countdown { color: #6b6b6b; }
+        .list-item-meta .review { color: #6b6b6b; }
+        .list-item-meta .stars { color: #6b6b6b; }
+        .list-item-meta .day-label { color: var(--text-accent); }
+
+        .list-item-labels {
+            display: flex;
+            gap: var(--space-1);
+            margin-top: 2px;
+            flex-wrap: wrap;
+            padding-left: 12px;
+        }
+
+        .label {
+            font-size: 12px;
+            padding: 1px 4px;
+            border-radius: 2px;
+            border: 1px solid var(--border);
+        }
+
+        /* ========== Empty & Loading States ========== */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-8) var(--space-4);
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            font-size: 28px;
+            margin-bottom: var(--space-3);
+            opacity: 0.6;
+        }
+
+        .empty-text {
+            font-size: 12px;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-8);
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .loading-dots span {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: var(--radius-full);
+            animation: loading-dot 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0; }
+
+        @keyframes loading-dot {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* ========== Fun Widgets ========== */
+        .fun-row {
+            display: flex;
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .fun-widget {
+            display: flex;
+            gap: var(--space-3);
+            padding: var(--space-2) var(--space-3);
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            flex: 1;
+            min-width: 280px;
+            max-width: 480px;
+            align-items: center;
+        }
+
+        .fun-widget-image {
+            width: 60px;
+            height: 45px;
+            border-radius: 2px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fun-widget-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .fun-widget-image .placeholder {
+            color: #6b6b6b;
+            font-size: 16px;
+        }
+
+        .fun-widget-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .fun-widget-icon svg {
+            width: 16px;
+            height: 16px;
+            color: #6b6b6b;
+        }
+
+        .fun-widget-icon.ccb-icon {
+            background: transparent;
+        }
+
+        .ccb-widget {
+            min-width: 280px;
+        }
+
+        .fun-widget-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .fun-widget-meta {
+            font-size: 12px;
+            color: #6b6b6b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2px;
+        }
+
+        .fun-widget-meta::before {
+            content: '> ';
+        }
+
+        .fun-widget-title {
+            font-size: 12px;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+
+        .fun-widget-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .fun-widget-title a:hover {
+            text-decoration: underline;
+        }
+
+        .fun-widget-refresh {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: #6b6b6b;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-out);
+            flex-shrink: 0;
+        }
+
+        .fun-widget-refresh:hover {
+            background: var(--bg-elevated);
+            border-color: #6b6b6b;
+        }
+
+        .fun-widget-refresh.spinning svg {
+            animation: spin 0.5s ease;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========== Quick Links ========== */
+        .quick-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-2);
+            flex-wrap: wrap;
+            margin-bottom: var(--space-8);
+        }
+
+        .quick-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-1) var(--space-2);
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: #6b6b6b;
+            text-decoration: none;
+            font-size: 12px;
+            font-family: var(--font-mono);
+            transition: all var(--duration-fast) var(--ease-out);
+        }
+
+        .quick-link::before {
+            content: '>';
+            color: #6b6b6b;
+            margin-right: 2px;
+        }
+
+        .quick-link:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+
+        .quick-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .quick-link.dragging {
+            opacity: 0.5;
+        }
+
+        .quick-link.drag-over {
+            border-color: var(--accent);
+        }
+
+        /* ========== Status Bar ========== */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-4);
+            padding: var(--space-3);
+            font-size: 12px;
+            font-family: var(--font-mono);
+            color: #6b6b6b;
+            border-top: 1px solid var(--border);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .status-item::before {
+            content: '[';
+            color: #4a4a4a;
+        }
+
+        .status-item::after {
+            content: ']';
+            color: #4a4a4a;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 1px;
+            background: #6b6b6b;
+        }
+
+        .status-dot.connected { background: var(--success); }
+        .status-dot.disconnected { background: var(--error); }
+
+        .status-quote {
+            max-width: 400px;
+            font-style: normal;
+            color: #4a4a4a;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .status-quote::before {
+            content: '# ';
+            color: #4a4a4a;
+        }
+
+        /* ========== Calendar Status ========== */
+        .calendar-status {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .calendar-reconnect {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: var(--space-1) var(--space-2);
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 500;
+            background: var(--error);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: white;
+            cursor: pointer;
+            transition: background var(--duration-fast);
+        }
+
+        .calendar-reconnect:hover {
+            background: #dc2626;
+        }
+
+        .calendar-expiry-warning {
+            font-size: 12px;
+            color: var(--warning);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ========== Modal ========== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--duration-normal) var(--ease-out);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            width: 100%;
+            max-width: 440px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: none;
+            transform: scale(0.95) translateY(10px);
+            transition: transform var(--duration-normal) var(--ease-out);
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-4) var(--space-5);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 12px;
+            font-family: var(--font-mono);
+            color: #6b6b6b;
+        }
+
+        .modal-title::before {
+            content: '> ';
+            color: #6b6b6b;
+        }
+
+        .modal-close {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: #6b6b6b;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            transition: all var(--duration-fast) var(--ease-out);
+        }
+
+        .modal-close:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+        }
+
+        .modal-body {
+            padding: var(--space-5);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-4);
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-family: var(--font-mono);
+            margin-bottom: var(--space-2);
+            color: #6b6b6b;
+        }
+
+        .form-label::before {
+            content: '$ ';
+            color: #4a4a4a;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: var(--space-2);
+            line-height: 1.5;
+        }
+
+        .form-hint a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .form-hint a:hover {
+            text-decoration: underline;
+        }
+
+        .form-hint code {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            background: var(--bg-elevated);
+            padding: 2px 5px;
+            border-radius: 4px;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-2) var(--space-3);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            background: var(--bg-base);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: var(--text-primary);
+            transition: all var(--duration-fast) var(--ease-out);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: none;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-out);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            border: 1px solid var(--accent);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--space-4);
+            }
+
+            .nav-ascii {
+                font-size: 13px;
+            }
+
+            .fun-widget {
+                max-width: none;
+                min-width: 100%;
+            }
+
+            .ccb-widget {
+                min-width: 100%;
+            }
+
+            .status-bar {
+                flex-wrap: wrap;
+                gap: var(--space-3);
+            }
+
+            .status-quote {
+                display: none;
+            }
+
+            .nav {
+                padding: 0 var(--space-4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav">
+        <div class="nav-brand">
+            <pre class="nav-ascii">B3.wtf
+&gt; automate.terminals();
+<span id="hero-time">--:--</span> · <span id="hero-date">Loading...</span></pre>
+        </div>
+        <div class="nav-controls">
+            <a href="https://github.com/berthuygens?tab=repositories" class="profile-btn" id="profile-link" title="Profile">
+                <div class="placeholder" id="profile-placeholder">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <img src="" alt="Profile" id="profile-pic" style="display: none;">
+            </a>
+            <button class="nav-btn theme-btn" id="theme-btn" title="Toggle theme">
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+            <button class="nav-btn" id="settings-btn" title="Settings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="container">
+            <!-- Search -->
+            <section class="search-section">
+                <div class="search-wrapper">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" class="search-input" id="repo-search-input" placeholder="Search repos..." autofocus>
+                    <div class="search-results" id="repo-search-results"></div>
+                </div>
+            </section>
+
+            <!-- Dashboard -->
+            <section class="dashboard">
+                <!-- Issues -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title issues">
+                            <svg viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
+                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"></path>
+                            </svg>
+                            Issues
+                        </div>
+                        <div class="card-toggle" id="issues-toggle">
+                            <button class="card-toggle-btn active" data-view="assigned">Assigned <span id="issues-assigned-count">0</span></button>
+                            <button class="card-toggle-btn" data-view="created">Created <span id="issues-created-count">0</span></button>
+                        </div>
+                    </div>
+                    <div class="card-body" id="issues-container">
+                        <div class="loading">
+                            <div class="loading-dots"><span></span><span></span><span></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pull Requests -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title prs">
+                            <svg viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M1.5 3.25a2.25 2.25 0 1 1 3 2.122v5.256a2.251 2.251 0 1 1-1.5 0V5.372A2.25 2.25 0 0 1 1.5 3.25Zm5.677-.177L9.573.677A.25.25 0 0 1 10 .854V2.5h1A2.5 2.5 0 0 1 13.5 5v5.628a2.251 2.251 0 1 1-1.5 0V5a1 1 0 0 0-1-1h-1v1.646a.25.25 0 0 1-.427.177L7.177 3.427a.25.25 0 0 1 0-.354ZM3.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm0 9.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm8.25.75a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Z"></path>
+                            </svg>
+                            Pull Requests
+                        </div>
+                        <span class="card-badge" id="prs-count">0</span>
+                    </div>
+                    <div class="card-body" id="prs-container">
+                        <div class="loading">
+                            <div class="loading-dots"><span></span><span></span><span></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title calendar">
+                            <svg viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M4.5 0a.5.5 0 0 1 .5.5V1h6V.5a.5.5 0 0 1 1 0V1h1.5A1.5 1.5 0 0 1 15 2.5v11a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 13.5v-11A1.5 1.5 0 0 1 2.5 1H4V.5a.5.5 0 0 1 .5-.5ZM2.5 2a.5.5 0 0 0-.5.5V4h12V2.5a.5.5 0 0 0-.5-.5h-11ZM2 13.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V5H2v8.5Z"></path>
+                            </svg>
+                            Upcoming
+                        </div>
+                        <div class="calendar-status" id="calendar-status"></div>
+                    </div>
+                    <div class="card-body" id="calendar-container">
+                        <div class="loading">
+                            <div class="loading-dots"><span></span><span></span><span></span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fun Widgets Row -->
+            <section class="fun-row">
+                <!-- Reddit Widget -->
+                <div class="fun-widget">
+                    <div class="fun-widget-image" id="fun-post-image">
+                        <span class="placeholder">🎲</span>
+                    </div>
+                    <div class="fun-widget-body" id="fun-post-body">
+                        <div class="fun-widget-meta">Random Fun</div>
+                        <div class="fun-widget-title"><a href="#">Loading...</a></div>
+                    </div>
+                    <button class="fun-widget-refresh" id="fun-post-refresh" title="Show another">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12a9 9 0 11-9-9c2.52 0 4.93 1 6.74 2.74L21 8V3"></path>
+                        </svg>
+                    </button>
+                </div>
+                <!-- CCB Security Widget -->
+                <div class="fun-widget ccb-widget">
+                    <div class="fun-widget-icon ccb-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                        </svg>
+                    </div>
+                    <div class="fun-widget-body" id="ccb-widget-body">
+                        <div class="fun-widget-meta">CCB Security</div>
+                        <div class="fun-widget-title"><a href="#" id="ccb-news-ticker">loading...</a></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Links -->
+            <nav class="quick-links" id="quick-links"></nav>
+
+            <!-- Status Bar -->
+            <footer class="status-bar">
+                <div class="status-item">
+                    <span class="status-dot" id="github-status"></span>
+                    <span>GitHub</span>
+                </div>
+                <div class="status-item" id="last-updated"></div>
+                <div class="status-item status-quote" id="random-quote"></div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Settings</h2>
+                <button class="modal-close" id="modal-close">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="settings-form">
+                    <div class="form-group">
+                        <label class="form-label">GitHub Personal Access Token</label>
+                        <input type="password" class="form-input" id="github-token" placeholder="ghp_xxxxxxxxxxxx">
+                        <p class="form-hint">
+                            Create at <a href="https://github.com/settings/tokens" target="_blank">GitHub Settings → Tokens</a><br>
+                            Scopes: <code>repo</code>, <code>read:user</code>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Repo Search Locations</label>
+                        <input type="text" class="form-input" id="repo-search-locations" placeholder="user:username, org:orgname">
+                        <p class="form-hint">
+                            Comma-separated. Format: <code>user:name</code> or <code>org:name</code>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">OAuth Worker URL</label>
+                        <input type="text" class="form-input" id="worker-url" placeholder="https://your-worker.workers.dev">
+                        <p class="form-hint">Your Cloudflare Worker URL</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Google Calendar</label>
+                        <button type="button" class="btn btn-primary btn-block" id="google-auth-btn">
+                            Connect Google Calendar
+                        </button>
+                        <p class="form-hint" id="google-auth-status">Not connected</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Profile Picture URL</label>
+                        <input type="text" class="form-input" id="profile-image-url" placeholder="https://github.com/username.png">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Profile Link URL</label>
+                        <input type="text" class="form-input" id="profile-link-url" placeholder="https://github.com/username">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Save & Reload</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== Configuration ==========
+        const CONFIG_KEY = 'terminal-home-config';
+
+        function getConfig() {
+            try {
+                return JSON.parse(localStorage.getItem(CONFIG_KEY)) || {};
+            } catch {
+                return {};
+            }
+        }
+
+        function saveConfig(config) {
+            localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+        }
+
+        // ========== Theme Toggle ==========
+        function initTheme() {
+            const config = getConfig();
+            const theme = config.theme || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        }
+
+        function toggleTheme() {
+            const config = getConfig();
+            const currentTheme = config.theme || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            config.theme = newTheme;
+            saveConfig(config);
+            document.documentElement.setAttribute('data-theme', newTheme);
+        }
+
+        initTheme();
+        document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+
+        // ========== Clock ==========
+        function updateClock() {
+            const now = new Date();
+            const timeEl = document.getElementById('hero-time');
+            const dateEl = document.getElementById('hero-date');
+
+            timeEl.textContent = now.toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            dateEl.textContent = now.toLocaleDateString('en-GB', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // ========== Reddit Posts ==========
+        const sfwSubreddits = [
+            { name: 'ProgrammerHumor', icon: '💻' },
+            { name: 'aww', icon: '🐱' },
+            { name: 'wholesomememes', icon: '💚' },
+            { name: 'MadeMeSmile', icon: '😊' },
+            { name: 'oddlysatisfying', icon: '✨' },
+            { name: 'NatureIsFuckingLit', icon: '🔥' },
+            { name: 'interestingasfuck', icon: '🤯' },
+            { name: 'EarthPorn', icon: '🌍' },
+            { name: 'foodporn', icon: '🍕' },
+            { name: 'CozyPlaces', icon: '🏠' },
+            { name: 'rarepuppers', icon: '🐕' },
+            { name: 'Eyebleach', icon: '🥰' },
+            { name: 'AnimalsBeingDerps', icon: '🤪' },
+            { name: 'cats', icon: '😺' },
+            { name: 'mildlyinteresting', icon: '🧐' }
+        ];
+
+        let cachedRedditPosts = [];
+        let currentPostIndex = 0;
+
+        async function fetchRedditPosts() {
+            const randomSub = sfwSubreddits[Math.floor(Math.random() * sfwSubreddits.length)];
+
+            try {
+                const response = await fetch(`https://www.reddit.com/r/${randomSub.name}/hot.json?limit=50`);
+                const data = await response.json();
+
+                const posts = data.data.children
+                    .map(child => child.data)
+                    .filter(post => !post.over_18 && !post.stickied && !post.is_video)
+                    .map(post => {
+                        // Get the best available image
+                        let imageUrl = null;
+                        if (post.preview?.images?.[0]?.resolutions) {
+                            // Get a medium resolution preview
+                            const resolutions = post.preview.images[0].resolutions;
+                            const medium = resolutions.find(r => r.width >= 200 && r.width <= 400) || resolutions[resolutions.length - 1];
+                            if (medium) {
+                                imageUrl = medium.url.replace(/&amp;/g, '&');
+                            }
+                        } else if (post.thumbnail && post.thumbnail.startsWith('http')) {
+                            imageUrl = post.thumbnail;
+                        }
+
+                        return {
+                            title: post.title,
+                            subreddit: post.subreddit_name_prefixed,
+                            url: `https://reddit.com${post.permalink}`,
+                            score: post.score,
+                            image: imageUrl
+                        };
+                    });
+
+                return posts;
+            } catch (err) {
+                console.error('Reddit fetch error:', err);
+                return [];
+            }
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+            return num.toString();
+        }
+
+        function renderRedditPost(post) {
+            const container = document.getElementById('fun-post-body');
+            const imageContainer = document.getElementById('fun-post-image');
+
+            container.innerHTML = `
+                <div class="fun-widget-meta">${escapeHtml(post.subreddit)} · ⬆ ${formatNumber(post.score)}</div>
+                <div class="fun-widget-title"><a href="${escapeHtml(post.url)}" target="_blank" rel="noopener">${escapeHtml(post.title)}</a></div>
+            `;
+
+            if (post.image) {
+                // SECURITY: Use DOM APIs instead of innerHTML to prevent XSS via malicious image URLs
+                imageContainer.innerHTML = '';
+                const img = document.createElement('img');
+                img.alt = '';
+                img.addEventListener('error', () => {
+                    imageContainer.innerHTML = '<span class="placeholder">🎲</span>';
+                });
+                // Validate URL scheme before setting src
+                try {
+                    const url = new URL(post.image);
+                    if (url.protocol === 'https:' || url.protocol === 'http:') {
+                        img.src = post.image;
+                        imageContainer.appendChild(img);
+                    } else {
+                        imageContainer.innerHTML = '<span class="placeholder">🎲</span>';
+                    }
+                } catch {
+                    imageContainer.innerHTML = '<span class="placeholder">🎲</span>';
+                }
+            } else {
+                imageContainer.innerHTML = '<span class="placeholder">🎲</span>';
+            }
+        }
+
+        async function showRandomRedditPost() {
+            const container = document.getElementById('fun-post-body');
+            const imageContainer = document.getElementById('fun-post-image');
+
+            if (cachedRedditPosts.length > 0 && currentPostIndex < cachedRedditPosts.length) {
+                renderRedditPost(cachedRedditPosts[currentPostIndex]);
+                currentPostIndex++;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="fun-widget-meta">Loading...</div>
+                <div class="fun-widget-title"><a href="#">Fetching posts...</a></div>
+            `;
+            imageContainer.innerHTML = '<span class="placeholder">⏳</span>';
+
+            const posts = await fetchRedditPosts();
+
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div class="fun-widget-meta">Reddit</div>
+                    <div class="fun-widget-title"><a href="https://reddit.com">Could not load posts</a></div>
+                `;
+                imageContainer.innerHTML = '<span class="placeholder">😢</span>';
+                return;
+            }
+
+            cachedRedditPosts = posts.sort(() => Math.random() - 0.5);
+            currentPostIndex = 0;
+            renderRedditPost(cachedRedditPosts[currentPostIndex]);
+            currentPostIndex++;
+        }
+
+        showRandomRedditPost();
+
+        document.getElementById('fun-post-refresh').addEventListener('click', function() {
+            this.classList.add('spinning');
+            if (currentPostIndex >= cachedRedditPosts.length) {
+                cachedRedditPosts = [];
+                currentPostIndex = 0;
+            }
+            showRandomRedditPost().then(() => {
+                this.classList.remove('spinning');
+            });
+        });
+
+        // ========== Quick Links ==========
+        const DEFAULT_LINKS = [
+            { id: 'github', name: 'IT Ops', url: 'https://github.com/orgs/inbo/projects/23', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>' },
+            { id: 'calendar', name: 'Calendar', url: 'https://calendar.google.com', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>' },
+            { id: 'gmail', name: 'Gmail', url: 'https://mail.google.com', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>' },
+            { id: 'devops', name: 'DevOps', url: 'https://github.com/orgs/inbo/projects/18', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>' },
+            { id: 'reddit', name: 'Reddit', url: 'https://reddit.com', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701z"/></svg>' },
+            { id: 'aws', name: 'AWS', url: 'https://eu-west-1.console.aws.amazon.com/ec2/home?region=eu-west-1#Home', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2.4c5.302 0 9.6 4.298 9.6 9.6s-4.298 9.6-9.6 9.6S2.4 17.302 2.4 12 6.698 2.4 12 2.4zm-1.2 4.8v9.6l7.2-4.8-7.2-4.8z"/></svg>' },
+            { id: 'isms', name: 'ISMS', url: 'https://github.com/inbo/ISMS', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>' },
+            { id: 'gemini', name: 'Gemini', url: 'https://gemini.google.com', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>' },
+            { id: 'chess', name: 'Chess', url: 'https://www.chess.com/home', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1.1 0 2 .9 2 2 0 .74-.4 1.38-1 1.72V7h1c1.1 0 2 .9 2 2v1h1c1.1 0 2 .9 2 2v7c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2v-7c0-1.1.9-2 2-2h1v-1c0-1.1.9-2 2-2h1V5.72c-.6-.34-1-.98-1-1.72 0-1.1.9-2 2-2z"/></svg>' }
+        ];
+
+        const LINKS_ORDER_KEY = 'quick-links-order';
+
+        function getLinksOrder() {
+            try {
+                const order = JSON.parse(localStorage.getItem(LINKS_ORDER_KEY));
+                if (order && Array.isArray(order)) return order;
+            } catch {}
+            return DEFAULT_LINKS.map(l => l.id);
+        }
+
+        function saveLinksOrder(order) {
+            localStorage.setItem(LINKS_ORDER_KEY, JSON.stringify(order));
+        }
+
+        function renderQuickLinks() {
+            const container = document.getElementById('quick-links');
+            const order = getLinksOrder();
+
+            const sortedLinks = order
+                .map(id => DEFAULT_LINKS.find(l => l.id === id))
+                .filter(Boolean);
+
+            DEFAULT_LINKS.forEach(link => {
+                if (!order.includes(link.id)) sortedLinks.push(link);
+            });
+
+            container.innerHTML = sortedLinks.map(link => `
+                <a href="${link.url}" class="quick-link" draggable="true" data-id="${link.id}" target="_blank">
+                    ${link.icon}
+                    <span>${link.name}</span>
+                </a>
+            `).join('');
+
+            initDragAndDrop();
+        }
+
+        let draggedElement = null;
+
+        function initDragAndDrop() {
+            const container = document.getElementById('quick-links');
+            const links = container.querySelectorAll('.quick-link');
+
+            links.forEach(link => {
+                link.addEventListener('dragstart', handleDragStart);
+                link.addEventListener('dragend', handleDragEnd);
+                link.addEventListener('dragover', handleDragOver);
+                link.addEventListener('dragenter', handleDragEnter);
+                link.addEventListener('dragleave', handleDragLeave);
+                link.addEventListener('drop', handleDrop);
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', this.dataset.id);
+        }
+
+        function handleDragEnd() {
+            this.classList.remove('dragging');
+            document.querySelectorAll('.quick-link').forEach(el => el.classList.remove('drag-over'));
+            draggedElement = null;
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            if (this !== draggedElement) {
+                this.classList.add('drag-over');
+            }
+        }
+
+        function handleDragLeave() {
+            this.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+
+            if (draggedElement && this !== draggedElement) {
+                const container = document.getElementById('quick-links');
+                const allLinks = [...container.querySelectorAll('.quick-link')];
+                const draggedIdx = allLinks.indexOf(draggedElement);
+                const targetIdx = allLinks.indexOf(this);
+
+                if (draggedIdx < targetIdx) {
+                    this.parentNode.insertBefore(draggedElement, this.nextSibling);
+                } else {
+                    this.parentNode.insertBefore(draggedElement, this);
+                }
+
+                const newOrder = [...container.querySelectorAll('.quick-link')].map(el => el.dataset.id);
+                saveLinksOrder(newOrder);
+            }
+        }
+
+        renderQuickLinks();
+
+        // ========== GitHub API ==========
+        let issuesData = { assigned: [], created: [] };
+        let currentIssuesView = 'assigned';
+
+        async function fetchGitHubData() {
+            const config = getConfig();
+            const token = config.githubToken;
+
+            if (!token) {
+                showEmptyState('issues-container', '🔑', 'Add GitHub token in settings');
+                showEmptyState('prs-container', '🔑', 'Add GitHub token in settings');
+                document.getElementById('github-status').classList.add('disconnected');
+                return;
+            }
+
+            const headers = {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json'
+            };
+
+            try {
+                const userRes = await fetch('https://api.github.com/user', { headers });
+                if (!userRes.ok) throw new Error(`GitHub auth failed: ${userRes.status}`);
+                const user = await userRes.json();
+
+                const issuesRes = await fetch('https://api.github.com/issues?filter=assigned&state=open&per_page=10', { headers });
+                const assignedIssues = issuesRes.ok ? await issuesRes.json() : [];
+
+                const createdRes = await fetch(`https://api.github.com/search/issues?q=is:issue+is:open+author:${user.login}+-assignee:${user.login}&per_page=15&sort=updated`, { headers });
+                const createdData = await createdRes.json();
+                const createdIssues = (createdData.items || []).filter(issue => issue.assignees && issue.assignees.length > 0);
+
+                issuesData.assigned = assignedIssues;
+                issuesData.created = createdIssues;
+
+                // Default to Created tab if no assigned issues, otherwise Assigned
+                currentIssuesView = assignedIssues.length > 0 ? 'assigned' : 'created';
+                const toggleBtns = document.querySelectorAll('#issues-toggle .card-toggle-btn');
+                toggleBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === currentIssuesView);
+                });
+
+                const prsRes = await fetch(`https://api.github.com/search/issues?q=is:pr+is:open+author:${user.login}&per_page=10&sort=updated`, { headers });
+                const prsData = await prsRes.json();
+                const prs = prsData.items || [];
+
+                const reviewRes = await fetch(`https://api.github.com/search/issues?q=is:pr+is:open+review-requested:${user.login}&per_page=5`, { headers });
+                const reviewData = await reviewRes.json();
+                const reviewPrs = reviewData.items || [];
+
+                renderIssues(currentIssuesView === 'assigned' ? assignedIssues : createdIssues, currentIssuesView);
+                renderPRs(prs, reviewPrs);
+
+                document.getElementById('github-status').classList.add('connected');
+                document.getElementById('issues-assigned-count').textContent = assignedIssues.length;
+                document.getElementById('issues-created-count').textContent = createdIssues.length;
+                document.getElementById('prs-count').textContent = prs.length + (reviewPrs.length > 0 ? `+${reviewPrs.length}` : '');
+            } catch (err) {
+                console.error('GitHub fetch error:', err);
+                showEmptyState('issues-container', '⚠️', err.message || 'Failed to fetch');
+                showEmptyState('prs-container', '⚠️', err.message || 'Failed to fetch');
+                document.getElementById('github-status').classList.add('disconnected');
+            }
+        }
+
+        document.getElementById('issues-toggle').addEventListener('click', function(e) {
+            const btn = e.target.closest('.card-toggle-btn');
+            if (!btn) return;
+
+            const view = btn.dataset.view;
+            if (view === currentIssuesView) return;
+
+            currentIssuesView = view;
+            this.querySelectorAll('.card-toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderIssues(issuesData[view], view);
+        });
+
+        // ========== Repo Search ==========
+        let searchTimeout = null;
+        const repoSearchInput = document.getElementById('repo-search-input');
+        const repoSearchResults = document.getElementById('repo-search-results');
+
+        let selectedResultIndex = -1;
+
+        repoSearchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            clearTimeout(searchTimeout);
+            selectedResultIndex = -1;
+
+            if (query.length < 2) {
+                repoSearchResults.classList.remove('has-results');
+                repoSearchResults.innerHTML = '';
+                return;
+            }
+
+            searchTimeout = setTimeout(() => searchRepos(query), 300);
+        });
+
+        repoSearchInput.addEventListener('keydown', function(e) {
+            const items = repoSearchResults.querySelectorAll('a.list-item');
+            if (!items.length) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedResultIndex = Math.min(selectedResultIndex + 1, items.length - 1);
+                updateSelectedResult(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedResultIndex = Math.max(selectedResultIndex - 1, 0);
+                updateSelectedResult(items);
+            } else if (e.key === 'Enter' && selectedResultIndex >= 0) {
+                e.preventDefault();
+                items[selectedResultIndex].click();
+            } else if (e.key === 'Escape') {
+                repoSearchResults.classList.remove('has-results');
+                repoSearchResults.innerHTML = '';
+                selectedResultIndex = -1;
+            }
+        });
+
+        function updateSelectedResult(items) {
+            items.forEach((item, i) => {
+                item.classList.toggle('selected', i === selectedResultIndex);
+            });
+            if (selectedResultIndex >= 0 && items[selectedResultIndex]) {
+                items[selectedResultIndex].scrollIntoView({ block: 'nearest' });
+            }
+        }
+
+        function getRepoSearchLocations() {
+            const config = getConfig();
+            const locations = config.repoSearchLocations || 'user:berthuygens, org:inbo';
+            return locations.split(',').map(s => s.trim()).filter(s => s);
+        }
+
+        function updateRepoSearchPlaceholder() {
+            const locations = getRepoSearchLocations();
+            const names = locations.map(loc => loc.replace(/^(user:|org:)/, '')).join(' & ');
+            repoSearchInput.placeholder = `Search repos in ${names}...`;
+        }
+
+        updateRepoSearchPlaceholder();
+
+        async function searchRepos(query) {
+            const config = getConfig();
+            const token = config.githubToken;
+
+            if (!token) {
+                repoSearchResults.classList.add('has-results');
+                repoSearchResults.innerHTML = '<div class="empty-state"><div class="empty-icon">🔑</div><div class="empty-text">Add GitHub token in settings</div></div>';
+                return;
+            }
+
+            const headers = {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json'
+            };
+
+            try {
+                const locations = getRepoSearchLocations();
+                const locationQuery = locations.join(' ');
+                const searchQuery = encodeURIComponent(`${query} in:name,description ${locationQuery}`);
+                const res = await fetch(`https://api.github.com/search/repositories?q=${searchQuery}&per_page=10&sort=updated`, { headers });
+
+                if (!res.ok) throw new Error('Search failed');
+
+                const data = await res.json();
+                renderRepoResults(data.items || []);
+            } catch (err) {
+                console.error('Repo search error:', err);
+                repoSearchResults.classList.add('has-results');
+                repoSearchResults.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-text">Search failed</div></div>';
+            }
+        }
+
+        function renderRepoResults(repos) {
+            if (!repos.length) {
+                repoSearchResults.classList.add('has-results');
+                repoSearchResults.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">No repos found</div></div>';
+                return;
+            }
+
+            repoSearchResults.classList.add('has-results');
+            repoSearchResults.innerHTML = repos.map(repo => `
+                <a href="${repo.html_url}" class="list-item" target="_blank">
+                    <svg class="list-item-icon repo" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path>
+                    </svg>
+                    <div class="list-item-content">
+                        <div class="list-item-title"><span style="color: var(--text-muted)">${escapeHtml(repo.owner.login)}/</span>${escapeHtml(repo.name)}</div>
+                        <div class="list-item-meta">
+                            ${repo.description ? `<span>${escapeHtml(repo.description.substring(0, 50))}${repo.description.length > 50 ? '...' : ''}</span>` : ''}
+                            ${repo.stargazers_count > 0 ? `<span class="stars">★ ${repo.stargazers_count}</span>` : ''}
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        function renderIssues(issues, view = 'assigned') {
+            const container = document.getElementById('issues-container');
+
+            if (!issues.length) {
+                const emptyMsg = view === 'assigned' ? 'No assigned issues' : 'No issues assigned to others';
+                showEmptyState('issues-container', '✨', emptyMsg);
+                return;
+            }
+
+            container.innerHTML = issues.map(issue => {
+                const repoName = issue.repository?.full_name || issue.repository_url?.split('/').slice(-2).join('/') || '';
+                const assigneeInfo = view === 'created' && issue.assignees?.length
+                    ? `<span class="assignee">→ ${issue.assignees.map(a => a.login).join(', ')}</span>`
+                    : '';
+
+                return `
+                <a href="${issue.html_url}" class="list-item" target="_blank">
+                    <svg class="list-item-icon issue" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
+                        <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"></path>
+                    </svg>
+                    <div class="list-item-content">
+                        <div class="list-item-title">${escapeHtml(issue.title)}</div>
+                        <div class="list-item-meta">
+                            <span class="repo">${repoName}</span>
+                            ${assigneeInfo}
+                            <span>#${issue.number}</span>
+                            <span>${timeAgo(issue.updated_at)}</span>
+                        </div>
+                        ${issue.labels?.length ? `
+                            <div class="list-item-labels">
+                                ${issue.labels.slice(0, 3).map(label => `
+                                    <span class="label" style="background: #${label.color}20; color: #${label.color};">
+                                        ${escapeHtml(label.name)}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                </a>
+            `}).join('');
+        }
+
+        function renderPRs(prs, reviewPrs = []) {
+            const container = document.getElementById('prs-container');
+
+            const allPrs = [...prs];
+            const prIds = new Set(prs.map(p => p.id));
+            reviewPrs.forEach(pr => {
+                if (!prIds.has(pr.id)) {
+                    pr._isReview = true;
+                    allPrs.push(pr);
+                }
+            });
+
+            if (!allPrs.length) {
+                showEmptyState('prs-container', '🎉', 'No open pull requests');
+                return;
+            }
+
+            container.innerHTML = allPrs.map(pr => `
+                <a href="${pr.html_url}" class="list-item" target="_blank">
+                    <svg class="list-item-icon pr" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M1.5 3.25a2.25 2.25 0 1 1 3 2.122v5.256a2.251 2.251 0 1 1-1.5 0V5.372A2.25 2.25 0 0 1 1.5 3.25Zm5.677-.177L9.573.677A.25.25 0 0 1 10 .854V2.5h1A2.5 2.5 0 0 1 13.5 5v5.628a2.251 2.251 0 1 1-1.5 0V5a1 1 0 0 0-1-1h-1v1.646a.25.25 0 0 1-.427.177L7.177 3.427a.25.25 0 0 1 0-.354ZM3.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm0 9.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm8.25.75a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Z"></path>
+                    </svg>
+                    <div class="list-item-content">
+                        <div class="list-item-title">${escapeHtml(pr.title)}</div>
+                        <div class="list-item-meta">
+                            <span class="repo">${pr.repository_url?.split('/').slice(-2).join('/') || ''}</span>
+                            <span>#${pr.number}</span>
+                            <span>${timeAgo(pr.updated_at)}</span>
+                            ${pr._isReview ? '<span class="review">review</span>' : ''}
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // ========== Google Calendar API ==========
+        async function getAccessToken() {
+            const config = getConfig();
+            if (!config.workerUrl) return null;
+
+            try {
+                const res = await fetch(`${config.workerUrl}/token`);
+                const data = await res.json();
+
+                if (data.error) {
+                    if (data.error === 'not_authenticated') {
+                        delete config.googleAccessToken;
+                        delete config.googleTokenExpiry;
+                        saveConfig(config);
+                    }
+                    return null;
+                }
+
+                config.googleAccessToken = data.access_token;
+                config.googleTokenExpiry = Date.now() + (data.expires_in * 1000);
+                saveConfig(config);
+                return data.access_token;
+            } catch (err) {
+                console.error('Failed to get token:', err);
+                return null;
+            }
+        }
+
+        function triggerGoogleReconnect() {
+            const config = getConfig();
+            if (!config.workerUrl) {
+                alert('Please set your OAuth Worker URL in settings first');
+                document.getElementById('settings-btn').click();
+                return;
+            }
+
+            const width = 500, height = 600;
+            const left = (window.innerWidth - width) / 2;
+            const top = (window.innerHeight - height) / 2;
+            window.open(`${config.workerUrl}/auth`, 'google-oauth', `width=${width},height=${height},left=${left},top=${top}`);
+        }
+
+        function updateCalendarStatus() {
+            const config = getConfig();
+            const statusEl = document.getElementById('calendar-status');
+
+            if (!config.googleAccessToken) {
+                statusEl.innerHTML = `
+                    <button class="calendar-reconnect" onclick="triggerGoogleReconnect()">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12a9 9 0 11-9-9c2.52 0 4.93 1 6.74 2.74L21 8V3"></path>
+                        </svg>
+                        Connect
+                    </button>
+                `;
+                return;
+            }
+
+            if (config.workerUrl) {
+                statusEl.innerHTML = `<span style="font-size: 12px; color: var(--success); font-weight: 500;">✓ Auto</span>`;
+                return;
+            }
+
+            const timeLeft = (config.googleTokenExpiry || 0) - Date.now();
+            if (timeLeft <= 0) {
+                statusEl.innerHTML = `
+                    <span class="calendar-expiry-warning">Expired</span>
+                    <button class="calendar-reconnect" onclick="triggerGoogleReconnect()">Reconnect</button>
+                `;
+            } else if (timeLeft < 600000) {
+                statusEl.innerHTML = `
+                    <span class="calendar-expiry-warning">${Math.ceil(timeLeft / 60000)}m</span>
+                    <button class="calendar-reconnect" onclick="triggerGoogleReconnect()">Refresh</button>
+                `;
+            } else {
+                statusEl.innerHTML = `<span style="font-size: 13px; color: var(--text-muted);">${Math.floor(timeLeft / 60000)}m</span>`;
+            }
+        }
+
+        async function fetchNextMeeting() {
+            const config = getConfig();
+            updateCalendarStatus();
+
+            if (config.workerUrl) {
+                const token = await getAccessToken();
+                if (token) {
+                    fetchCalendarData();
+                } else {
+                    showEmptyState('calendar-container', '🔑', 'Click Connect to link Calendar');
+                }
+                return;
+            }
+
+            if (!config.googleAccessToken) {
+                showEmptyState('calendar-container', '🔑', 'Set Worker URL in settings');
+                return;
+            }
+
+            if (config.googleTokenExpiry && Date.now() > config.googleTokenExpiry) {
+                showEmptyState('calendar-container', '🔄', 'Session expired');
+                return;
+            }
+
+            fetchCalendarData();
+        }
+
+        async function fetchCalendarData() {
+            const config = getConfig();
+
+            try {
+                const now = new Date().toISOString();
+                const url = `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${now}&maxResults=20&singleEvents=true&orderBy=startTime`;
+
+                const res = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${config.googleAccessToken}` }
+                });
+
+                if (res.status === 401) {
+                    config.googleTokenExpiry = 0;
+                    saveConfig(config);
+                    updateCalendarStatus();
+                    showEmptyState('calendar-container', '🔄', 'Session expired');
+                    return;
+                }
+
+                if (!res.ok) throw new Error(`Calendar API error: ${res.status}`);
+
+                const data = await res.json();
+                let events = data.items || [];
+
+                const locationKeywords = ['home', 'thuis', 'office', 'kantoor', 'bureau', 'ht bxl', 'vac gent'];
+                events = events.filter(event => {
+                    const title = (event.summary || '').toLowerCase();
+                    return !locationKeywords.some(keyword => title.includes(keyword));
+                }).slice(0, 4);
+
+                if (!events.length) {
+                    showEmptyState('calendar-container', '📅', 'No upcoming meetings');
+                    return;
+                }
+
+                renderMeetings(events);
+            } catch (err) {
+                console.error('Calendar fetch error:', err);
+                showEmptyState('calendar-container', '⚠️', err.message || 'Failed to fetch');
+            }
+        }
+
+        function renderMeetings(events) {
+            const container = document.getElementById('calendar-container');
+            const now = new Date();
+
+            container.innerHTML = events.map(event => {
+                const startDate = event.start.dateTime ? new Date(event.start.dateTime) : new Date(event.start.date);
+                const isAllDay = !event.start.dateTime;
+                const isToday = startDate.toDateString() === now.toDateString();
+                const isTomorrow = startDate.toDateString() === new Date(now.getTime() + 86400000).toDateString();
+
+                let dayLabel = isToday ? 'Today' : isTomorrow ? 'Tomorrow' : startDate.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+                const timeStr = isAllDay ? 'All day' : startDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                const countdown = getEventCountdown(startDate, isAllDay);
+
+                return `
+                    <a href="${event.htmlLink || 'https://calendar.google.com'}" class="list-item" target="_blank">
+                        <svg class="list-item-icon calendar" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M4.5 1.75v1.5H2.5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1h-2v-1.5a.75.75 0 0 0-1.5 0v1.5h-4v-1.5a.75.75 0 0 0-1.5 0ZM2.5 6h11v7.25H2.5V6Z"/>
+                        </svg>
+                        <div class="list-item-content">
+                            <div class="list-item-title">${escapeHtml(event.summary || 'No title')}</div>
+                            <div class="list-item-meta">
+                                <span>${timeStr}</span>
+                                <span class="day-label">${dayLabel}</span>
+                                <span class="countdown">${countdown}</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        function getEventCountdown(date, isAllDay) {
+            const now = new Date();
+            let diff = date - now;
+
+            if (isAllDay) {
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const eventDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                diff = eventDay - today;
+            }
+
+            if (diff < 0) return 'Now';
+
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+            if (isAllDay) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                if (days === 0) return 'Today';
+                if (days === 1) return 'Tomorrow';
+                return `in ${days}d`;
+            }
+
+            if (hours < 1) return `in ${minutes}m`;
+            if (hours < 24) return `in ${hours}h ${minutes}m`;
+            return `in ${Math.floor(hours / 24)}d`;
+        }
+
+        // ========== Utilities ==========
+        function showEmptyState(containerId, icon, text) {
+            document.getElementById(containerId).innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">${icon}</div>
+                    <div class="empty-text">${text}</div>
+                </div>
+            `;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function timeAgo(dateString) {
+            const seconds = Math.floor((new Date() - new Date(dateString)) / 1000);
+            const intervals = [
+                { label: 'y', seconds: 31536000 },
+                { label: 'mo', seconds: 2592000 },
+                { label: 'd', seconds: 86400 },
+                { label: 'h', seconds: 3600 },
+                { label: 'm', seconds: 60 }
+            ];
+            for (const interval of intervals) {
+                const count = Math.floor(seconds / interval.seconds);
+                if (count >= 1) return `${count}${interval.label} ago`;
+            }
+            return 'just now';
+        }
+
+        // ========== Modal ==========
+        const modal = document.getElementById('modal');
+        const settingsBtn = document.getElementById('settings-btn');
+        const modalClose = document.getElementById('modal-close');
+        const settingsForm = document.getElementById('settings-form');
+
+        settingsBtn.addEventListener('click', () => {
+            const config = getConfig();
+            document.getElementById('github-token').value = config.githubToken || '';
+            document.getElementById('repo-search-locations').value = config.repoSearchLocations || 'user:berthuygens, org:inbo';
+            document.getElementById('worker-url').value = config.workerUrl || '';
+            document.getElementById('profile-image-url').value = config.profileImageUrl || '';
+            document.getElementById('profile-link-url').value = config.profileLinkUrl || 'https://github.com/berthuygens?tab=repositories';
+            updateGoogleAuthStatus();
+            modal.classList.add('active');
+        });
+
+        modalClose.addEventListener('click', () => modal.classList.remove('active'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+
+        settingsForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const config = getConfig();
+            config.githubToken = document.getElementById('github-token').value;
+            config.repoSearchLocations = document.getElementById('repo-search-locations').value || 'user:berthuygens, org:inbo';
+            config.workerUrl = document.getElementById('worker-url').value;
+            config.profileImageUrl = document.getElementById('profile-image-url').value;
+            config.profileLinkUrl = document.getElementById('profile-link-url').value || 'https://github.com/berthuygens?tab=repositories';
+            saveConfig(config);
+            modal.classList.remove('active');
+            updateRepoSearchPlaceholder();
+            init();
+        });
+
+        async function updateGoogleAuthStatus() {
+            const config = getConfig();
+            const statusEl = document.getElementById('google-auth-status');
+            const btnEl = document.getElementById('google-auth-btn');
+
+            if (!config.workerUrl) {
+                statusEl.textContent = 'Set Worker URL first';
+                statusEl.style.color = 'var(--warning)';
+                btnEl.textContent = 'Connect Google Calendar';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${config.workerUrl}/status`);
+                const data = await res.json();
+                if (data.authenticated) {
+                    statusEl.textContent = 'Connected (auto-refresh enabled)';
+                    statusEl.style.color = 'var(--success)';
+                    btnEl.textContent = 'Reconnect';
+                } else {
+                    statusEl.textContent = 'Not connected';
+                    statusEl.style.color = '';
+                    btnEl.textContent = 'Connect Google Calendar';
+                }
+            } catch {
+                statusEl.textContent = 'Worker not reachable';
+                statusEl.style.color = 'var(--error)';
+            }
+        }
+
+        // SECURITY: Hardcoded trusted worker origins - never trust localStorage for origin validation
+        const TRUSTED_WORKER_ORIGINS = [
+            'https://sysopbeta-oauth.workers.dev',
+            'http://localhost:8787', // Wrangler dev server
+        ];
+
+        window.addEventListener('message', (event) => {
+            if (!event.origin) return;
+
+            // Validate against hardcoded trusted origins, not user-controlled localStorage
+            const isTrustedOrigin = TRUSTED_WORKER_ORIGINS.includes(event.origin);
+            if (!isTrustedOrigin) {
+                console.warn('Rejected postMessage from untrusted origin:', event.origin);
+                return;
+            }
+
+            if (event.data?.type === 'oauth-success') {
+                const config = getConfig();
+                config.googleAccessToken = event.data.accessToken;
+                config.googleTokenExpiry = Date.now() + (event.data.expiresIn * 1000);
+                saveConfig(config);
+                updateGoogleAuthStatus();
+                updateCalendarStatus();
+                fetchCalendarData();
+            }
+        });
+
+        document.getElementById('google-auth-btn').addEventListener('click', () => {
+            const config = getConfig();
+            const workerUrl = document.getElementById('worker-url').value || config.workerUrl;
+            if (!workerUrl) {
+                alert('Please enter your OAuth Worker URL first');
+                return;
+            }
+            config.workerUrl = workerUrl;
+            saveConfig(config);
+
+            const width = 500, height = 600;
+            const left = (window.innerWidth - width) / 2;
+            const top = (window.innerHeight - height) / 2;
+            window.open(`${workerUrl}/auth`, 'google-oauth', `width=${width},height=${height},left=${left},top=${top}`);
+        });
+
+        // ========== Last Updated & Quotes ==========
+        function updateLastUpdated() {
+            document.getElementById('last-updated').textContent = `Updated ${new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
+        }
+
+        const quotes = [
+            "Talk is cheap. Show me the code. — Linus Torvalds",
+            "First, solve the problem. Then, write the code. — John Johnson",
+            "Make it work, make it right, make it fast. — Kent Beck",
+            "Simplicity is the soul of efficiency. — Austin Freeman",
+            "Code is like humor. When you have to explain it, it's bad. — Cory House",
+            "Clean code always looks like it was written by someone who cares. — Robert C. Martin",
+            "The best error message is the one that never shows up. — Thomas Fuchs",
+            "It works on my machine. — Every developer ever",
+            "There are only two hard things in CS: cache invalidation and naming things. — Phil Karlton",
+            "Deleted code is debugged code. — Jeff Sickel"
+        ];
+
+        function showRandomQuote() {
+            document.getElementById('random-quote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
+        }
+        showRandomQuote();
+
+        // ========== Profile ==========
+        function updateProfilePicture() {
+            const config = getConfig();
+            const profileLink = document.getElementById('profile-link');
+            const profilePic = document.getElementById('profile-pic');
+            const profilePlaceholder = document.getElementById('profile-placeholder');
+
+            profileLink.href = config.profileLinkUrl || 'https://github.com/berthuygens?tab=repositories';
+
+            if (config.profileImageUrl) {
+                profilePic.src = config.profileImageUrl;
+                profilePic.style.display = 'block';
+                profilePlaceholder.style.display = 'none';
+                profilePic.onerror = () => {
+                    profilePic.style.display = 'none';
+                    profilePlaceholder.style.display = 'flex';
+                };
+            } else {
+                profilePic.style.display = 'none';
+                profilePlaceholder.style.display = 'flex';
+            }
+        }
+
+        // ========== CCB News Ticker ==========
+        let ccbNewsItems = [];
+        let ccbCurrentIndex = 0;
+        let ccbTickerInterval = null;
+        let ccbTypewriterTimeout = null;
+
+        async function fetchCCBNews() {
+            const ticker = document.getElementById('ccb-news-ticker');
+            const config = getConfig();
+
+            if (!config.workerUrl) {
+                ticker.textContent = 'set worker url';
+                ticker.href = '#';
+                return;
+            }
+
+            try {
+                const rssUrl = `${config.workerUrl}/rss?url=${encodeURIComponent('https://ccb.belgium.be/advisories.xml')}`;
+                const response = await fetch(rssUrl);
+                const xmlText = await response.text();
+
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                const items = xmlDoc.querySelectorAll('item');
+
+                ccbNewsItems = Array.from(items).slice(0, 10).map(item => ({
+                    title: item.querySelector('title')?.textContent || 'No title',
+                    link: item.querySelector('link')?.textContent || '#'
+                }));
+
+                if (ccbNewsItems.length > 0) {
+                    ccbCurrentIndex = Math.floor(Math.random() * ccbNewsItems.length);
+                    typewriteCCBNews();
+                    if (ccbTickerInterval) clearInterval(ccbTickerInterval);
+                    ccbTickerInterval = setInterval(rotateCCBNews, 20000);
+                } else {
+                    ticker.textContent = 'no advisories';
+                    ticker.href = 'https://ccb.belgium.be/advisories';
+                }
+            } catch {
+                ticker.textContent = 'ccb unavailable';
+                ticker.href = 'https://ccb.belgium.be/advisories';
+            }
+        }
+
+        function typewriteCCBNews() {
+            const ticker = document.getElementById('ccb-news-ticker');
+            if (!ccbNewsItems.length) return;
+            if (ccbTypewriterTimeout) clearTimeout(ccbTypewriterTimeout);
+
+            const item = ccbNewsItems[ccbCurrentIndex];
+            ticker.href = item.link;
+            ticker.textContent = '';
+            const text = item.title;
+            let charIndex = 0;
+
+            function typeNextChar() {
+                if (charIndex < text.length) {
+                    ticker.textContent = text.substring(0, charIndex + 1);
+                    charIndex++;
+                    ccbTypewriterTimeout = setTimeout(typeNextChar, 30);
+                }
+            }
+            typeNextChar();
+        }
+
+        function rotateCCBNews() {
+            ccbCurrentIndex = (ccbCurrentIndex + 1) % ccbNewsItems.length;
+            typewriteCCBNews();
+        }
+
+        // ========== Init ==========
+        function init() {
+            document.getElementById('github-status').className = 'status-dot';
+            updateProfilePicture();
+            fetchGitHubData();
+            fetchNextMeeting();
+            updateLastUpdated();
+            fetchCCBNews();
+        }
+
+        init();
+        setInterval(init, 5 * 60 * 1000);
+        setInterval(updateCalendarStatus, 60 * 1000);
+    </script>
+</body>
+</html>
