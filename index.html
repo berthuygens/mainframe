@@ -2066,7 +2066,7 @@
             let bodyHtml = `<div class="ticket-title">${escapeHtml(ticket.Title)}</div>`;
 
             if (ticket.Article && ticket.Article.length > 0) {
-                bodyHtml += ticket.Article.map(article => {
+                bodyHtml += [...ticket.Article].reverse().map(article => {
                     const from = article.From || article.SenderType || 'Unknown';
                     const created = article.Created ? timeAgo(article.Created) : '';
                     const body = article.Body || '';
