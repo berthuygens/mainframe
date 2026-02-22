@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://api.github.com https://www.googleapis.com https://www.reddit.com https://sysopbeta-oauth.huygens-bert.workers.dev https://sysopbeta-oauth.sysopbeta.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://api.github.com https://www.googleapis.com https://www.reddit.com https://sysopbeta-oauth.sysopbeta.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
     <title>terminals.work</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=2">
@@ -2005,6 +2005,7 @@
                 }
 
                 issuesData.helpdesk = data.tickets || [];
+                otoboTicketBaseUrl = data.ticketBaseUrl || null;
                 const helpdeskCount = data.total || issuesData.helpdesk.length;
                 const helpdeskCountEl = document.getElementById('issues-helpdesk-count');
                 helpdeskCountEl.textContent = helpdeskCount;
@@ -2024,6 +2025,7 @@
 
         // Store tickets for popup access
         let helpdeskTicketsCache = [];
+        let otoboTicketBaseUrl = null;
 
         function renderHelpdeskTickets(tickets) {
             const container = document.getElementById('issues-container');
@@ -2065,7 +2067,7 @@
             if (!ticket) return;
 
             const ticketModal = document.getElementById('ticket-modal');
-            const ticketUrl = `https://ticketing.inbo.be/otobo/index.pl?Action=AgentTicketZoom;TicketID=${ticket.TicketID}`;
+            const ticketUrl = otoboTicketBaseUrl ? `${otoboTicketBaseUrl}?Action=AgentTicketZoom;TicketID=${ticket.TicketID}` : '#';
 
             document.getElementById('ticket-modal-title').textContent = `#${ticket.TicketNumber}`;
             document.getElementById('ticket-modal-link').href = ticketUrl;
@@ -2694,7 +2696,6 @@
 
         // SECURITY: Hardcoded trusted worker origins - never trust localStorage for origin validation
         const TRUSTED_WORKER_ORIGINS = [
-            'https://sysopbeta-oauth.huygens-bert.workers.dev',
             'https://sysopbeta-oauth.sysopbeta.workers.dev',
             'http://localhost:8787', // Wrangler dev server
         ];

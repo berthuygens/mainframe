@@ -35,8 +35,7 @@ function handleOptions(request) {
 const GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 
-// OTOBO API endpoint (migrated from OTRS)
-const OTOBO_BASE_URL = 'https://ticketing.inbo.be/otobo/nph-genericinterface.pl/Webservice/DaemonAPI';
+// OTOBO API base URL read from env.OTOBO_BASE_URL secret
 
 // Validate API key from Authorization: Bearer <key> header
 function validateApiKey(request, env) {
@@ -364,17 +363,25 @@ async function handleRSS(url, corsHeader) {
 
 // OTOBO: Fetch tickets for the configured user
 async function handleOTRSTickets(env, corsHeader) {
-  // Get credentials from environment secrets
+  // Get credentials and config from environment secrets
   const username = env.OTRS_USERNAME;
   const password = env.OTRS_PASSWORD;
+  const otoboBaseUrl = env.OTOBO_BASE_URL;
+  const ownerIdRaw = env.OTOBO_OWNER_ID;
 
   if (!username || !password) {
     return jsonResponse({ error: 'OTOBO credentials not configured' }, 500, corsHeader);
   }
 
+  if (!otoboBaseUrl) {
+    return jsonResponse({ error: 'OTOBO_BASE_URL not configured' }, 500, corsHeader);
+  }
+
+  const ownerId = ownerIdRaw ? Number(ownerIdRaw) : null;
+
   try {
     // Step 1: Login to get SessionID
-    const loginResponse = await fetch(`${OTOBO_BASE_URL}/Login`, {
+    const loginResponse = await fetch(`${otoboBaseUrl}/Login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ UserLogin: username, Password: password }),
@@ -390,16 +397,19 @@ async function handleOTRSTickets(env, corsHeader) {
     // Small delay after login for session to be ready
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    // Step 2: Search for new and open tickets owned by bert.huygens (OwnerID=3)
-    const searchNew = await fetch(`${OTOBO_BASE_URL}/Search`, {
+    // Step 2: Search for new and open tickets
+    const searchBody = { SessionID: sessionId, Limit: 50 };
+    if (ownerId) searchBody.OwnerIDs = [ownerId];
+
+    const searchNew = await fetch(`${otoboBaseUrl}/Search`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ SessionID: sessionId, StateType: 'new', OwnerIDs: [3], Limit: 50 }),
+      body: JSON.stringify({ ...searchBody, StateType: 'new' }),
     });
-    const searchOpen = await fetch(`${OTOBO_BASE_URL}/Search`, {
+    const searchOpen = await fetch(`${otoboBaseUrl}/Search`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ SessionID: sessionId, StateType: 'open', OwnerIDs: [3], Limit: 50 }),
+      body: JSON.stringify({ ...searchBody, StateType: 'open' }),
     });
 
     const newData = await searchNew.json();
@@ -417,31 +427,49 @@ async function handleOTRSTickets(env, corsHeader) {
     ];
 
     if (allTicketIds.length === 0) {
-      return jsonResponse({ tickets: [] }, 200, corsHeader);
+      return jsonResponse({ tickets: [], ticketBaseUrl: deriveTicketBaseUrl(otoboBaseUrl) }, 200, corsHeader);
     }
 
     // Step 3: Get details for each ticket sequentially to avoid rate limits
     // Include AllArticles=1 to fetch ticket body content
     const allTickets = [];
     for (const ticketId of allTicketIds) {
-      const ticketResponse = await fetch(`${OTOBO_BASE_URL}/Get/${ticketId}?SessionID=${sessionId}&AllArticles=1`);
+      const ticketResponse = await fetch(`${otoboBaseUrl}/Get/${ticketId}?SessionID=${sessionId}&AllArticles=1`);
       const ticketData = await ticketResponse.json();
       if (ticketData.Ticket?.[0]) {
         allTickets.push(ticketData.Ticket[0]);
       }
     }
 
-    // Filter by OwnerID=3 (bert.huygens)
+    // Filter by OwnerID if configured
     // Use loose equality (==) because OTOBO API may return OwnerID as string or number
-    const tickets = allTickets.filter(t => t.OwnerID == 3);
+    const tickets = ownerId
+      ? allTickets.filter(t => t.OwnerID == ownerId)
+      : allTickets;
 
     // Sort by Changed date (most recent first)
     tickets.sort((a, b) => new Date(b.Changed) - new Date(a.Changed));
 
-    return jsonResponse({ tickets }, 200, corsHeader);
+    return jsonResponse({ tickets, ticketBaseUrl: deriveTicketBaseUrl(otoboBaseUrl) }, 200, corsHeader);
   } catch (error) {
     console.error('OTOBO error:', error);
     return jsonResponse({ error: 'Failed to fetch OTOBO tickets' }, 502, corsHeader);
+  }
+}
+
+// Derive the web-facing ticket URL base from the API base URL
+// e.g. https://host/otobo/nph-genericinterface.pl/... → https://host/otobo/index.pl
+function deriveTicketBaseUrl(apiBaseUrl) {
+  try {
+    const u = new URL(apiBaseUrl);
+    // Take everything up to and including /otobo/, append index.pl
+    const otoboIdx = u.pathname.indexOf('/otobo/');
+    if (otoboIdx !== -1) {
+      return `${u.origin}${u.pathname.substring(0, otoboIdx)}/otobo/index.pl`;
+    }
+    return `${u.origin}/otobo/index.pl`;
+  } catch {
+    return null;
   }
 }
 
