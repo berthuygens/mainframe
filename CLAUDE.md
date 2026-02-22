@@ -91,19 +91,11 @@ Events with these titles are automatically filtered (work locations):
 
 - https://automate.terminals.work (custom domain via CNAME)
 - https://berthuygens.github.io/daemon/
-- Worker: https://sysopbeta-oauth.huygens-bert.workers.dev
+- Worker: https://sysopbeta-oauth.sysopbeta.workers.dev
 
 ## OTOBO Integration
 
-The dashboard fetches helpdesk tickets from OTOBO (https://ticketing.inbo.be/otobo/).
-
-**OTOBO Webservice Configuration:**
-- Webservice name: `DaemonAPI`
-- Base URL: `https://ticketing.inbo.be/otobo/nph-genericinterface.pl/Webservice/DaemonAPI`
-- Operations: `/Login` (POST), `/Search` (POST/GET), `/Get/:TicketID` (GET)
-- API user: `webapi` (with DB auth enabled for fallback)
-- Filters: OwnerID=3 (bert.huygens), StateType=new/open
+The dashboard fetches helpdesk tickets via the Cloudflare Worker (`/otrs/tickets` endpoint). OTOBO connection details (base URL, API user, owner filters) are configured in `worker.js`. The Worker authenticates via session-based auth using `OTRS_USERNAME` and `OTRS_PASSWORD` secrets.
 
 **Required OTOBO Settings:**
 - `SessionCheckRemoteIP` must be **disabled** (Cloudflare Workers use different IPs)
-- `webapi` user needs read access to ticket queues/groups
